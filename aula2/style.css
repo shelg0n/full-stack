@@ -1,0 +1,37 @@
+p{
+    color: goldenrod;
+    
+    background-color: blanchedalmond;
+
+}
+
+#p1{
+
+background-color: black;
+
+}
+
+#p2{
+
+background-color: crimson;
+
+}
+
+.pb{
+
+color: aliceblue;
+background-color: darkslategrey;
+
+}
+
+a{
+
+    color: red;
+
+}
+
+a:hover{
+
+background-color: rgb(148, 84, 7);
+
+}
