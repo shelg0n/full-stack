@@ -1,0 +1,21 @@
+HTML:
+<div class="container">
+
+    <div class="card">
+        <img src="img.jpg">
+        <h2>Título</h2>
+        <p>Descrição</p>
+    </div>
+
+</div>
+
+-------------------------------
+
+<a> → link
+<img> → imagem
+<div> → caixa
+position → mover
+border → borda
+top/left → posição
+margin → espaço
+padding → espaço interno
