@@ -1,0 +1,117 @@
+/* CONFIGURAÇÃO GERAL */
+body {
+    margin: 0; /* remove margens padrão */
+    font-family: Arial;
+    background-color: #d9d9d9; /* fundo cinza */
+    text-align: center;
+}
+
+/* ================= TOPO ================= */
+
+.topo {
+    background-color: #e6c9a8; /* cor bege */
+    border: 2px solid blue;
+    display: flex; /* coloca itens lado a lado */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Logos */
+.logo-esq {
+    width: 60px;
+}
+
+.logo-dir {
+    width: 60px;
+}
+
+/* Título */
+.topo h1 {
+    color: green;
+}
+
+/* ================= MENU ================= */
+
+.menu {
+    background-color: #6aa5d9; /* azul */
+    padding: 10px;
+}
+
+/* Links do menu */
+.menu a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: darkred;
+    font-weight: bold;
+}
+
+/* ================= INTRO ================= */
+
+.intro {
+    padding: 20px;
+}
+
+/* ================= LIVROS ================= */
+
+.livros {
+    padding: 20px;
+}
+
+/* Container dos livros */
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* espaço entre imagens */
+}
+
+/* Imagens dos livros */
+.cards img {
+    width: 150px;
+}
+
+/* ================= MIDIA ================= */
+
+.midia {
+    padding: 20px;
+}
+
+/* Container vídeo + mapa */
+.midia-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Imagens */
+.midia-container img {
+    width: 300px;
+}
+
+/* ================= CONTATO ================= */
+
+.contato {
+    padding: 20px;
+}
+
+/* Caixa de contato */
+.tabela {
+    border: 2px dashed red;
+    display: inline-block;
+    padding: 10px;
+}
+
+/* ================= RODAPÉ ================= */
+
+.rodape {
+    background-color: #e6c9a8;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logos rodapé */
+.rodape img {
+    width: 50px;
+}
