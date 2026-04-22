@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Sans Fight HARD</title>
+<style>
+    body {
+        background: black;
+        color: white;
+        font-family: monospace;
+        text-align: center;
+    }
+
+    #boss-img {
+        width: 200px;
+        margin-top: 10px;
+    }
+
+    #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    canvas {
+        border: 4px solid white;
+        background: black;
+    }
+
+    #tp-bar {
+        width: 15px;
+        height: 400px;
+        background: gray;
+        position: relative;
+    }
+
+    #tp-fill {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 0%;
+        background: cyan;
+    }
+
+    #hp-bar {
+        width: 400px;
+        height: 15px;
+        background: gray;
+        margin: 10px auto;
+    }
+
+    #hp-fill {
+        height: 100%;
+        width: 100%;
+        background: red;
+    }
+
+    button {
+        margin: 5px;
+        padding: 10px;
+        background: black;
+        color: white;
+        border: 2px solid white;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<img id="Cap" src="Captura de tela 2026-04-22 145726.png">
+
+<div id="hp-bar"><div id="hp-fill"></div></div>
+
+<div id="container">
+    <div id="tp-bar"><div id="tp-fill"></div></div>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+</div>
+
+<div>
+    <button onclick="attack()">Atacar</button>
+    <button onclick="talk()">Falar</button>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let heart = { x: 200, y: 200, size: 10, speed: 3 };
+let keys = {};
+let bones = [];
+let tp = 0;
+let hp = 100;
+let difficulty = 1;
+
+// CONTROLES
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+// PADRÕES MAIS DIFÍCEIS
+function spawnBoneTop() {
+    let gap = Math.random() * 150 + 30; // menor espaço
+    for (let i = 0; i < canvas.width; i += 15) {
+        if (i < gap || i > gap + 50) {
+            bones.push({ x: i, y: -20, w: 10, h: 20, speed: 4 + difficulty });
+        }
+    }
+}
+
+function spawnBoneSide() {
+    let gap = Math.random() * 150 + 30;
+    for (let i = 0; i < canvas.height; i += 15) {
+        if (i < gap || i > gap + 50) {
+            bones.push({ x: -20, y: i, w: 20, h: 10, speed: 4 + difficulty, side: true });
+        }
+    }
+}
+
+// LOOP
+function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // MOVIMENTO
+    if (keys["ArrowUp"]) heart.y -= heart.speed;
+    if (keys["ArrowDown"]) heart.y += heart.speed;
+    if (keys["ArrowLeft"]) heart.x -= heart.speed;
+    if (keys["ArrowRight"]) heart.x += heart.speed;
+
+    // COLISÃO COM BORDAS
+    heart.x = Math.max(0, Math.min(canvas.width - heart.size, heart.x));
+    heart.y = Math.max(0, Math.min(canvas.height - heart.size, heart.y));
+
+    // DESENHAR CORAÇÃO
+    ctx.fillStyle = "red";
+    ctx.fillRect(heart.x, heart.y, heart.size, heart.size);
+
+    // OSSOS
+    ctx.fillStyle = "white";
+    bones.forEach((b, i) => {
+        if (b.side) b.x += b.speed;
+        else b.y += b.speed;
+
+        ctx.fillRect(b.x, b.y, b.w, b.h);
+
+        // COLISÃO
+        if (
+            b.x < heart.x + heart.size &&
+            b.x + b.w > heart.x &&
+            b.y < heart.y + heart.size &&
+            b.y + b.h > heart.y
+        ) {
+            hp -= 2;
+            tp = Math.max(0, tp - 5);
+        }
+
+        // TP PRECISO (quase hit real)
+        let dx = Math.abs((b.x + b.w/2) - (heart.x + heart.size/2));
+        let dy = Math.abs((b.y + b.h/2) - (heart.y + heart.size/2));
+        let dist = Math.sqrt(dx*dx + dy*dy);
+
+        if (dist < 20 && dist > 12) {
+            tp += 0.3;
+        }
+
+        // REMOVER
+        if (b.x > canvas.width || b.y > canvas.height) {
+            bones.splice(i, 1);
+        }
+    });
+
+    // ESCALONAMENTO DE DIFICULDADE
+    difficulty += 0.0005;
+
+    tp = Math.min(tp, 100);
+    hp = Math.max(hp, 0);
+
+    document.getElementById("tp-fill").style.height = tp + "%";
+    document.getElementById("hp-fill").style.width = hp + "%";
+
+    requestAnimationFrame(update);
+}
+
+// BOTÕES
+function attack() {
+    alert("Você atacou!");
+}
+
+function talk() {
+    alert("...");
+}
+
+// SPAWN MAIS RÁPIDO
+setInterval(() => {
+    if (Math.random() > 0.5) spawnBoneTop();
+    else spawnBoneSide();
+}, 600);
+
+update();
+</script>
+
+</body>
+</html>
