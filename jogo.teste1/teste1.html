@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Sans Fight HARD</title>
+<title>Dirty Fight HARD</title>
 <style>
     body {
         background: black;
@@ -87,11 +87,11 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-let heart = { x: 200, y: 200, size: 10, speed: 3 };
+let heart = { x: 200, y: 200, size: 10, speed: 5 };
 let keys = {};
 let bones = [];
 let tp = 0;
-let hp = 100;
+let hp = 150;
 let difficulty = 1;
 
 // CONTROLES
@@ -102,8 +102,8 @@ document.addEventListener("keyup", e => keys[e.key] = false);
 function spawnBoneTop() {
     let gap = Math.random() * 150 + 30; // menor espaço
     for (let i = 0; i < canvas.width; i += 15) {
-        if (i < gap || i > gap + 50) {
-            bones.push({ x: i, y: -20, w: 10, h: 20, speed: 4 + difficulty });
+        if (i < gap || i > gap + 100) {
+            bones.push({ x: i, y: -20, w: 10, h: 20, speed: 3 + difficulty });
         }
     }
 }
@@ -111,8 +111,8 @@ function spawnBoneTop() {
 function spawnBoneSide() {
     let gap = Math.random() * 150 + 30;
     for (let i = 0; i < canvas.height; i += 15) {
-        if (i < gap || i > gap + 50) {
-            bones.push({ x: -20, y: i, w: 20, h: 10, speed: 4 + difficulty, side: true });
+        if (i < gap || i > gap + 100) {
+            bones.push({ x: -20, y: i, w: 20, h: 10, speed: 2 + difficulty, side: true });
         }
     }
 }
@@ -127,15 +127,15 @@ function update() {
     if (keys["ArrowLeft"]) heart.x -= heart.speed;
     if (keys["ArrowRight"]) heart.x += heart.speed;
 
-    // COLISÃO COM BORDAS
+    // COLISÃO border
     heart.x = Math.max(0, Math.min(canvas.width - heart.size, heart.x));
     heart.y = Math.max(0, Math.min(canvas.height - heart.size, heart.y));
 
-    // DESENHAR CORAÇÃO
+    // CORAÇÃO 
     ctx.fillStyle = "red";
     ctx.fillRect(heart.x, heart.y, heart.size, heart.size);
 
-    // OSSOS
+    // bonessss
     ctx.fillStyle = "white";
     bones.forEach((b, i) => {
         if (b.side) b.x += b.speed;
@@ -143,7 +143,7 @@ function update() {
 
         ctx.fillRect(b.x, b.y, b.w, b.h);
 
-        // COLISÃO
+        // hit
         if (
             b.x < heart.x + heart.size &&
             b.x + b.w > heart.x &&
@@ -154,7 +154,7 @@ function update() {
             tp = Math.max(0, tp - 5);
         }
 
-        // TP PRECISO (quase hit real)
+        // TP PRECISO (deltarune tp)
         let dx = Math.abs((b.x + b.w/2) - (heart.x + heart.size/2));
         let dy = Math.abs((b.y + b.h/2) - (heart.y + heart.size/2));
         let dist = Math.sqrt(dx*dx + dy*dy);
@@ -169,7 +169,7 @@ function update() {
         }
     });
 
-    // ESCALONAMENTO DE DIFICULDADE
+    // AUMENTO DIFICULDADE
     difficulty += 0.0005;
 
     tp = Math.min(tp, 100);
@@ -181,7 +181,7 @@ function update() {
     requestAnimationFrame(update);
 }
 
-// BOTÕES
+// BOTÃO
 function attack() {
     alert("Você atacou!");
 }
@@ -190,7 +190,7 @@ function talk() {
     alert("...");
 }
 
-// SPAWN MAIS RÁPIDO
+// SPAWN RÁPIDO
 setInterval(() => {
     if (Math.random() > 0.5) spawnBoneTop();
     else spawnBoneSide();
